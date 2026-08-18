@@ -10,331 +10,604 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{--bg:#0B1220;--card:#141E33;--brd:#22334D;--acc:#22C3A6;--y:#F0B429;--rd:#EF4444;--mu:#8899AA;--tx:#E6EDF3}
-html,body{height:100%;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,'Segoe UI',sans-serif}
-body{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 18px;gap:18px}
-.wrap{width:100%;max-width:380px}
-h1{font-size:22px;font-weight:800;text-align:center;letter-spacing:1px;margin-bottom:4px}
-.sub{font-size:13px;color:var(--mu);text-align:center;margin-bottom:26px;line-height:1.5}
-.card{background:var(--card);border:1px solid var(--brd);border-radius:16px;padding:18px;margin-bottom:14px}
-.card h2{font-size:12px;color:var(--mu);text-transform:uppercase;letter-spacing:.6px;margin-bottom:12px;font-weight:700}
-input{width:100%;background:#0B1220;border:1px solid var(--brd);border-radius:10px;color:var(--tx);
-  padding:14px;font-size:16px;margin-bottom:10px;font-family:inherit}
-input:focus{outline:none;border-color:var(--acc)}
+html,body{min-height:100%;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,'Segoe UI',sans-serif;font-size:15px}
+body{padding:0 0 40px}
+.wrap{width:100%;max-width:520px;margin:0 auto;padding:18px 16px}
+.lockwrap{display:flex;flex-direction:column;justify-content:center;min-height:100vh}
+h1{font-size:20px;font-weight:800;letter-spacing:1px}
+.sub{font-size:12px;color:var(--mu);line-height:1.5}
+.card{background:var(--card);border:1px solid var(--brd);border-radius:14px;padding:14px;margin-bottom:12px}
+.card h2{font-size:11px;color:var(--mu);text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px;font-weight:700}
+input,select,textarea{width:100%;background:#0B1220;border:1px solid var(--brd);border-radius:10px;color:var(--tx);
+  padding:12px;font-size:15px;margin-bottom:8px;font-family:inherit}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--acc)}
+textarea{min-height:110px;font-family:ui-monospace,monospace;font-size:13px}
 input.pin{text-align:center;letter-spacing:8px;font-size:22px}
-button{width:100%;border:none;border-radius:14px;padding:16px;font-size:16px;font-weight:800;
-  cursor:pointer;font-family:inherit;transition:transform .12s;margin-bottom:8px}
-button:active{transform:scale(.97)}
-button:disabled{opacity:.45}
+button{border:none;border-radius:12px;padding:13px 16px;font-size:14px;font-weight:800;
+  cursor:pointer;font-family:inherit;transition:transform .12s;margin:0 6px 6px 0}
+button:active{transform:scale(.96)}
+button:disabled{opacity:.4}
+.w{width:100%;margin-right:0}
 .b-acc{background:var(--acc);color:#07131C}
 .b-y{background:var(--y);color:#0B1220}
-.b-gh{background:transparent;color:var(--mu);border:1px solid var(--brd);font-weight:600;font-size:13px;padding:11px}
-.b-rd{background:transparent;color:var(--rd);border:1px solid #4a1f1f;font-weight:600;font-size:13px;padding:11px}
-.msg{font-size:13px;line-height:1.55;padding:12px 14px;border-radius:10px;margin-bottom:12px;display:none}
+.b-rd{background:transparent;color:var(--rd);border:1px solid #4a1f1f;font-weight:600;font-size:13px}
+.b-gh{background:transparent;color:var(--mu);border:1px solid var(--brd);font-weight:600;font-size:13px}
+.b-sm{padding:8px 12px;font-size:13px}
+.mu{color:var(--mu);font-size:13px;line-height:1.5}
+.err{color:#FCA5A5;font-weight:700;font-size:13px}
+.okc{color:var(--acc);font-weight:700}
+.warn{color:var(--y);font-weight:700}
+.msg{font-size:13px;line-height:1.5;padding:11px 13px;border-radius:10px;margin-bottom:10px;display:none}
 .msg.on{display:block}
-.msg.err{background:rgba(239,68,68,.12);color:#FCA5A5;border:1px solid rgba(239,68,68,.3)}
-.msg.ok{background:rgba(34,195,166,.12);color:#7EE7D2;border:1px solid rgba(34,195,166,.3)}
-.msg.warn{background:rgba(240,180,41,.12);color:#F5CE72;border:1px solid rgba(240,180,41,.3)}
-.step{display:none}
-.step.on{display:block}
-.dots{display:flex;justify-content:center;gap:8px;margin:18px 0 22px}
-.dot{width:9px;height:9px;border-radius:50%;background:var(--brd);transition:all .25s}
-.dot.fill{background:var(--acc);transform:scale(1.25)}
-.fp{font-size:54px;text-align:center;margin:10px 0 18px;opacity:.85}
-.fp.pulse{animation:fp 1.6s ease-in-out infinite}
+.msg.e{background:rgba(239,68,68,.12);color:#FCA5A5;border:1px solid rgba(239,68,68,.3)}
+.msg.o{background:rgba(34,195,166,.12);color:#7EE7D2;border:1px solid rgba(34,195,166,.3)}
+.msg.w{background:rgba(240,180,41,.12);color:#F5CE72;border:1px solid rgba(240,180,41,.3)}
+.step{display:none}.step.on{display:block}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding:10px 16px 0;position:sticky;top:0;background:var(--bg);z-index:5;
+  border-bottom:1px solid var(--brd);scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{background:transparent;border:none;color:var(--mu);font-weight:700;font-size:13px;padding:10px 12px;
+  white-space:nowrap;border-bottom:2px solid transparent;border-radius:0;margin:0}
+.tab.sel{color:var(--acc);border-bottom-color:var(--acc)}
+.pane{display:none}.pane.on{display:block}
+.row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--brd);font-size:14px}
+.row:last-child{border:none}
+.bar{height:6px;background:#0B1220;border-radius:3px;overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;background:var(--acc)}
+.bar i.hot{background:var(--y)}.bar i.max{background:var(--rd)}
+.tok{font-family:ui-monospace,monospace;font-size:12px;background:#0B1220;padding:9px;border-radius:8px;
+  word-break:break-all;margin-top:8px;line-height:1.5}
+.k{font-family:ui-monospace,monospace;font-size:12px;padding:9px 10px;background:var(--card);border:1px solid var(--brd);
+  border-radius:8px;margin-bottom:5px;word-break:break-all;cursor:pointer}
+.k:active{border-color:var(--acc)}
+.fp{font-size:52px;text-align:center;margin:8px 0 16px;opacity:.85;animation:fp 1.6s ease-in-out infinite}
 @keyframes fp{0%,100%{opacity:.45;transform:scale(1)}50%{opacity:1;transform:scale(1.06)}}
-.foot{font-size:11px;color:#3d4a5c;text-align:center;line-height:1.6;margin-top:8px}
 .shake{animation:sh .38s}
 @keyframes sh{0%,100%{transform:translateX(0)}20%{transform:translateX(9px)}40%{transform:translateX(-8px)}60%{transform:translateX(5px)}80%{transform:translateX(-3px)}}
+.foot{font-size:11px;color:#3d4a5c;text-align:center;line-height:1.6;margin-top:14px}
+a{color:var(--acc)}
 </style>
 </head>
 <body>
-<div class="wrap">
 
-  <h1>🔒 ADMIN</h1>
-  <div class="sub" id="sub">fish.taxi · административен вход</div>
+<!-- ═══════════ ЗАКЛЮЧЕН ═══════════ -->
+<div id="gate" class="wrap lockwrap">
+  <h1 style="text-align:center">🔒 ADMIN</h1>
+  <div class="sub" id="sub" style="text-align:center;margin:6px 0 22px">fish.taxi · административен вход</div>
+  <div class="msg" id="gmsg"></div>
 
-  <div class="msg" id="msg"></div>
-
-  <!-- ══ ЗАКЛЮЧЕН ══ -->
   <div class="step" id="stLock">
-    <div class="fp pulse" id="fpIcon">👆</div>
-    <button class="b-acc" id="btnBio">Отключи с отпечатък</button>
-    <button class="b-gh" id="btnPinOnly">Вход само с PIN</button>
+    <div class="fp">👆</div>
+    <button class="b-acc w" id="btnBio">Отключи с отпечатък</button>
+    <button class="b-gh w" id="btnPinOnly">Вход само с PIN</button>
   </div>
 
-  <!-- ══ PIN ══ -->
   <div class="step" id="stPin">
     <div class="card">
       <h2 id="pinLabel">Въведи PIN</h2>
-      <div class="dots" id="dots"></div>
-      <input class="pin" id="inPin" type="password" inputmode="numeric" autocomplete="off"
-             maxlength="12" placeholder="••••••">
-      <button class="b-acc" id="btnPin">Продължи</button>
-      <button class="b-gh" id="btnPinBack">Назад</button>
+      <input class="pin" id="inPin" type="password" inputmode="numeric" autocomplete="off" maxlength="12" placeholder="••••••">
+      <button class="b-acc w" id="btnPin">Продължи</button>
+      <button class="b-gh w" id="btnPinBack">Назад</button>
     </div>
   </div>
 
-  <!-- ══ ОТКЛЮЧЕНО ══ -->
-  <div class="step" id="stOpen">
-    <div class="card">
-      <h2>Готово</h2>
-      <button class="b-acc" id="btnGo">📋 Копирай токена и отвори панела</button>
-      <button class="b-gh" id="btnCopy">Само копирай токена</button>
-    </div>
-    <button class="b-rd" id="btnWipe">🗑 Изтрий всичко от този телефон</button>
-  </div>
-
-  <!-- ══ ПЪРВОНАЧАЛНА НАСТРОЙКА ══ -->
   <div class="step" id="stSetup">
     <div class="card">
       <h2>Първоначална настройка</h2>
-      <div style="font-size:13px;color:var(--mu);line-height:1.6;margin-bottom:16px">
-        Този телефон става единственият, който отваря панела.
-        Отпечатъкът се връзва за хардуера му и не се копира никъде.
-      </div>
+      <div class="mu" style="margin-bottom:14px">Този телефон става единственият, който отваря панела. Отпечатъкът се връзва за хардуера му.</div>
       <input id="setToken" type="password" placeholder="Admin token (fta_…)" autocomplete="off">
       <input id="setPin" class="pin" type="password" inputmode="numeric" maxlength="12" placeholder="PIN (мин. 6)">
       <input id="setPin2" class="pin" type="password" inputmode="numeric" maxlength="12" placeholder="Повтори PIN">
-      <button class="b-y" id="btnSetup">Заключи на този телефон</button>
+      <button class="b-y w" id="btnSetup">Заключи на този телефон</button>
     </div>
   </div>
+  <div class="foot" id="gfoot"></div>
+</div>
 
-  <div class="foot" id="foot"></div>
+<!-- ═══════════ КОНЗОЛ ═══════════ -->
+<div id="app" style="display:none">
+  <div class="tabs" id="tabs"></div>
+  <div class="wrap">
+    <div class="msg" id="amsg"></div>
+
+    <div class="pane" id="p-home">
+      <div class="card">
+        <h2>Състояние</h2>
+        <div id="health" class="mu">—</div>
+      </div>
+      <div class="card">
+        <h2>Бързи действия</h2>
+        <button class="b-gh b-sm" id="qRisk">Опресни риска</button>
+        <button class="b-gh b-sm" id="qMap">Карта fish.taxi</button>
+        <button class="b-gh b-sm" id="qBak">BAK</button>
+        <button class="b-gh b-sm" id="qKat">KAT</button>
+      </div>
+      <button class="b-rd w" id="btnWipe">🗑 Изтрий достъпа от този телефон</button>
+    </div>
+
+    <div class="pane" id="p-drv">
+      <div id="pend"></div>
+      <div id="drv"></div>
+      <div class="card">
+        <h2>Добави шофьор ръчно</h2>
+        <input id="aName" placeholder="Име"><input id="aPhone" placeholder="Телефон 0888…">
+        <input id="aCar" placeholder="Кола"><input id="aPlate" placeholder="Рег. номер">
+        <button class="b-acc w" id="btnAdd">Създай и дай token</button>
+        <div id="addRes"></div>
+      </div>
+    </div>
+
+    <div class="pane" id="p-map">
+      <div class="card"><h2>Живо</h2><div id="live" class="mu">—</div></div>
+    </div>
+
+    <div class="pane" id="p-stat">
+      <div class="card"><h2>Последни 14 дни</h2><div id="stats" class="mu">—</div></div>
+    </div>
+
+    <div class="pane" id="p-kv">
+      <div class="card">
+        <h2>KV браузър</h2>
+        <div class="mu" style="margin-bottom:8px">Внимавай. Тук се пише направо в живото хранилище.</div>
+        <input id="kvPrefix" placeholder="префикс, напр. driver:  (празно = всичко)">
+        <button class="b-acc b-sm" id="btnKvList">Покажи ключове</button>
+        <div id="kvKeys" style="max-height:260px;overflow:auto;margin-top:10px"></div>
+      </div>
+      <div class="card">
+        <h2>Стойност</h2>
+        <input id="kvKey" placeholder="ключ">
+        <textarea id="kvVal" placeholder="стойност"></textarea>
+        <button class="b-gh b-sm" id="btnKvGet">Прочети</button>
+        <button class="b-y b-sm" id="btnKvPut">Запиши</button>
+        <button class="b-rd b-sm" id="btnKvDel">Изтрий</button>
+        <div id="kvRes"></div>
+      </div>
+    </div>
+
+    <div class="pane" id="p-gh">
+      <div class="card">
+        <h2>GitHub Actions</h2>
+        <select id="ghRepo"><option value="">— избери репо —</option></select>
+        <select id="ghWf"><option value="">— избери workflow —</option></select>
+        <button class="b-acc b-sm" id="btnGhRun">▶ Пусни</button>
+        <button class="b-gh b-sm" id="btnGhRuns">Последни изпълнения</button>
+        <div id="ghRes"></div>
+      </div>
+    </div>
+
+    <div class="pane" id="p-sec">
+      <div class="card">
+        <h2>Admin token</h2>
+        <div class="mu" style="margin-bottom:10px">Ротацията убива стария веднага. Новият се запечатва на този телефон автоматично.</div>
+        <button class="b-y w" id="btnRotate">🔄 Нов admin token</button>
+        <div id="rotRes"></div>
+      </div>
+      <div class="card">
+        <h2>Смени PIN</h2>
+        <input id="npin" class="pin" type="password" inputmode="numeric" maxlength="12" placeholder="нов PIN">
+        <input id="npin2" class="pin" type="password" inputmode="numeric" maxlength="12" placeholder="повтори">
+        <button class="b-gh w" id="btnNewPin">Запази</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
-/* ═══════════════════════════════════════════════════════════════════
-   ADMIN gate — fish.taxi
+/* ═══════════════════════════════════════════════════════════════
+   ADMIN конзол — fish.taxi
 
-   Какво пази какво:
-   • Истинската ключалка е admin токенът, който mvr-proxy проверява.
-     Всичко тук е слой удобство и защита при откраднат телефон.
-   • Токенът НЕ седи в чист вид никъде. Държи се AES-GCM криптиран,
-     ключът се извлича от PIN-а с PBKDF2 (300 000 обиколки, SHA-256).
-     Открадне ли някой localStorage-а, получава шифрован блоб.
-   • Отпечатъкът е WebAuthn platform credential — частният ключ живее
-     в защитения елемент на телефона и не напуска устройството.
-     Затова „само аз" е вярно за отпечатъка, не за PIN-а.
-   • В този файл няма нито един секрет. Репото е публично нарочно —
-     който го намери, вижда заключен екран и нищо повече.
-   • 5 грешни PIN-а трият блоба. По-добре ново вписване, отколкото
-     телефон, който някой изчаква да налучка.
-   ═══════════════════════════════════════════════════════════════════ */
+   Токенът е криптиран с AES-GCM, ключът идва от PIN-а през PBKDF2
+   (300 000 обиколки). Отпечатъкът е WebAuthn platform credential —
+   частният ключ не напуска телефона. В този файл няма нито един секрет.
 
-const PANEL = 'https://mvr-proxy.mihov-emil.workers.dev/admin';
+   Никъде няма inline onclick: всичко минава през addEventListener.
+   Точно този капан държеше стария /admin панел мъртъв — екраниран
+   апостроф вътре в стринг спираше целия скрипт да се парсва.
+   ═══════════════════════════════════════════════════════════════ */
+
+const W = 'https://mvr-proxy.mihov-emil.workers.dev';
 const K = { cred:'adm_cred', salt:'adm_salt', iv:'adm_iv', blob:'adm_blob', fails:'adm_fails' };
-const MAX_FAILS = 5;
-const ITER = 300000;
+const MAX_FAILS = 5, ITER = 300000;
 
-let TOKEN = null;      // само в паметта, докато табът е отворен
-let bioPassed = false;
+let TOKEN = null;
 
 const $ = id => document.getElementById(id);
-const b64 = buf => btoa(String.fromCharCode(...new Uint8Array(buf)));
+const b64 = b => btoa(String.fromCharCode(...new Uint8Array(b)));
 const unb64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+const esc = s => String(s == null ? '' : s).replace(/[<>&"]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]));
 
-function show(step){
-  ['stLock','stPin','stOpen','stSetup'].forEach(s => $(s).classList.toggle('on', s === step));
-}
-function msg(text, kind){
-  const m = $('msg');
-  m.textContent = text;
-  m.className = 'msg on ' + (kind || '');
-  if(!text) m.className = 'msg';
-}
-function shake(el){ el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); }
-
-function drawDots(n){
-  const d = $('dots');
-  d.innerHTML = '';
-  for(let i=0;i<8;i++){
-    const s = document.createElement('div');
-    s.className = 'dot' + (i < n ? ' fill' : '');
-    d.appendChild(s);
-  }
-}
-$('inPin').addEventListener('input', e => drawDots(e.target.value.length));
-drawDots(0);
+function el(tag, cls, html){ const e=document.createElement(tag); if(cls)e.className=cls; if(html!=null)e.innerHTML=html; return e }
+function bt(label, cls, fn){ const b=el('button',cls,label); b.addEventListener('click',()=>fn(b)); return b }
+function shake(e){ e.classList.remove('shake'); void e.offsetWidth; e.classList.add('shake') }
+function gmsg(t,k){ const m=$('gmsg'); m.textContent=t||''; m.className='msg'+(t?' on '+(k||''):'') }
+function amsg(t,k){ const m=$('amsg'); m.textContent=t||''; m.className='msg'+(t?' on '+(k||''):''); if(t)setTimeout(()=>{if(m.textContent===t)amsg('')},6000) }
+function step(s){ ['stLock','stPin','stSetup'].forEach(x=>$(x).classList.toggle('on',x===s)) }
 
 /* ─── крипто ─── */
 async function keyFromPin(pin, salt){
-  const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(pin),
-    'PBKDF2', false, ['deriveKey']);
-  return crypto.subtle.deriveKey(
-    { name:'PBKDF2', salt, iterations:ITER, hash:'SHA-256' },
-    base, { name:'AES-GCM', length:256 }, false, ['encrypt','decrypt']);
+  const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(pin), 'PBKDF2', false, ['deriveKey']);
+  return crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations:ITER,hash:'SHA-256'}, base,
+    {name:'AES-GCM',length:256}, false, ['encrypt','decrypt']);
 }
-async function sealToken(token, pin){
+async function seal(token, pin){
   const salt = crypto.getRandomValues(new Uint8Array(16));
-  const iv   = crypto.getRandomValues(new Uint8Array(12));
-  const key  = await keyFromPin(pin, salt);
-  const ct   = await crypto.subtle.encrypt({name:'AES-GCM', iv}, key,
-                 new TextEncoder().encode(token));
-  localStorage.setItem(K.salt, b64(salt));
-  localStorage.setItem(K.iv,   b64(iv));
-  localStorage.setItem(K.blob, b64(ct));
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const key = await keyFromPin(pin, salt);
+  const ct = await crypto.subtle.encrypt({name:'AES-GCM',iv}, key, new TextEncoder().encode(token));
+  localStorage.setItem(K.salt,b64(salt)); localStorage.setItem(K.iv,b64(iv)); localStorage.setItem(K.blob,b64(ct));
   localStorage.removeItem(K.fails);
 }
-async function openToken(pin){
-  const salt = unb64(localStorage.getItem(K.salt));
-  const iv   = unb64(localStorage.getItem(K.iv));
-  const ct   = unb64(localStorage.getItem(K.blob));
-  const key  = await keyFromPin(pin, salt);
-  /* Грешен PIN → AES-GCM се проваля при проверката на тага.
-     Затова няма нужда от отделен „хеш на PIN-а" — самият шифър е тестът. */
-  const pt = await crypto.subtle.decrypt({name:'AES-GCM', iv}, key, ct);
+async function unseal(pin){
+  const key = await keyFromPin(pin, unb64(localStorage.getItem(K.salt)));
+  const pt = await crypto.subtle.decrypt({name:'AES-GCM',iv:unb64(localStorage.getItem(K.iv))}, key,
+    unb64(localStorage.getItem(K.blob)));
   return new TextDecoder().decode(pt);
 }
 
 /* ─── WebAuthn ─── */
-async function registerBio(){
-  if(!window.PublicKeyCredential) return null;
+async function regBio(){
+  if(!window.PublicKeyCredential) return false;
   try{
-    const cred = await navigator.credentials.create({ publicKey:{
+    const c = await navigator.credentials.create({publicKey:{
       challenge: crypto.getRandomValues(new Uint8Array(32)),
-      rp: { name:'fish.taxi ADMIN' },
-      user: { id: crypto.getRandomValues(new Uint8Array(16)),
-              name:'admin', displayName:'fish.taxi admin' },
-      pubKeyCredParams: [{type:'public-key', alg:-7}, {type:'public-key', alg:-257}],
-      authenticatorSelection: { authenticatorAttachment:'platform',
-                                userVerification:'required', residentKey:'preferred' },
-      timeout: 60000, attestation:'none'
-    }});
-    localStorage.setItem(K.cred, b64(cred.rawId));
-    return true;
-  }catch(e){ return null; }
+      rp:{name:'fish.taxi ADMIN'},
+      user:{id:crypto.getRandomValues(new Uint8Array(16)),name:'admin',displayName:'fish.taxi admin'},
+      pubKeyCredParams:[{type:'public-key',alg:-7},{type:'public-key',alg:-257}],
+      authenticatorSelection:{authenticatorAttachment:'platform',userVerification:'required',residentKey:'preferred'},
+      timeout:60000, attestation:'none'}});
+    localStorage.setItem(K.cred, b64(c.rawId)); return true;
+  }catch(e){ return false }
 }
-async function verifyBio(){
+async function chkBio(){
   const id = localStorage.getItem(K.cred);
   if(!id || !window.PublicKeyCredential) return false;
   try{
-    await navigator.credentials.get({ publicKey:{
+    await navigator.credentials.get({publicKey:{
       challenge: crypto.getRandomValues(new Uint8Array(32)),
-      allowCredentials: [{ type:'public-key', id: unb64(id) }],
-      userVerification:'required', timeout: 60000
-    }});
+      allowCredentials:[{type:'public-key',id:unb64(id)}],
+      userVerification:'required', timeout:60000}});
     return true;
-  }catch(e){ return false; }
+  }catch(e){ return false }
 }
 
-/* ─── брояч на грешките ─── */
-function fails(){ return parseInt(localStorage.getItem(K.fails) || '0', 10); }
-function bumpFail(){
-  const n = fails() + 1;
-  localStorage.setItem(K.fails, String(n));
-  if(n >= MAX_FAILS){ wipe(); return true; }
-  return false;
-}
+/* ─── заключване ─── */
+const fails = () => parseInt(localStorage.getItem(K.fails)||'0',10);
 function wipe(){
-  Object.values(K).forEach(k => localStorage.removeItem(k));
-  TOKEN = null; bioPassed = false;
-  msg('Данните са изтрити от този телефон. Настрой отначало.', 'warn');
-  show('stSetup');
-  $('foot').textContent = '';
+  Object.values(K).forEach(k=>localStorage.removeItem(k));
+  TOKEN=null; $('app').style.display='none'; $('gate').style.display='flex';
+  gmsg('Данните са изтрити от този телефон.','w'); step('stSetup');
 }
 
-/* ─── стъпки ─── */
-function isSetUp(){ return !!localStorage.getItem(K.blob); }
-
-$('btnBio').onclick = async () => {
-  msg('', '');
-  $('fpIcon').textContent = '👆';
-  const ok = await verifyBio();
-  if(ok){ bioPassed = true; goPin('Потвърди с PIN'); }
-  else { msg('Отпечатъкът не бе разпознат. Може да влезеш само с PIN.', 'err'); }
-};
-$('btnPinOnly').onclick = () => goPin('Въведи PIN');
-$('btnPinBack').onclick = () => { $('inPin').value=''; drawDots(0); msg('',''); show('stLock'); };
+$('btnBio').addEventListener('click', async () => {
+  gmsg('');
+  if(await chkBio()) goPin('Потвърди с PIN');
+  else gmsg('Отпечатъкът не бе разпознат. Влез с PIN.','e');
+});
+$('btnPinOnly').addEventListener('click', () => goPin('Въведи PIN'));
+$('btnPinBack').addEventListener('click', () => { $('inPin').value=''; gmsg(''); step('stLock') });
 
 function goPin(label){
-  $('pinLabel').textContent = label;
-  $('inPin').value = ''; drawDots(0);
-  show('stPin');
-  setTimeout(()=>$('inPin').focus(), 120);
+  $('pinLabel').textContent=label; $('inPin').value='';
+  step('stPin'); setTimeout(()=>$('inPin').focus(),120);
   const left = MAX_FAILS - fails();
-  $('foot').textContent = left < MAX_FAILS ? ('Остават ' + left + ' опита преди изтриване.') : '';
+  $('gfoot').textContent = left < MAX_FAILS ? ('Остават '+left+' опита преди изтриване.') : '';
 }
 
-$('btnPin').onclick = async () => {
+$('btnPin').addEventListener('click', async () => {
   const pin = $('inPin').value.trim();
-  if(pin.length < 6){ shake($('inPin')); return; }
-  $('btnPin').disabled = true;
-  msg('Отключване…', '');
+  if(pin.length < 6){ shake($('inPin')); return }
+  $('btnPin').disabled = true; gmsg('Отключване…');
   try{
-    TOKEN = await openToken(pin);
+    TOKEN = await unseal(pin);
     localStorage.removeItem(K.fails);
-    msg('', '');
-    $('sub').textContent = 'Отключено · токенът е само в паметта на този таб';
-    show('stOpen');
-    $('foot').textContent = 'Затвориш ли таба, токенът изчезва от паметта.';
+    gmsg(''); enterApp();
   }catch(e){
-    const wiped = bumpFail();
-    if(!wiped){
-      shake($('inPin'));
-      msg('Грешен PIN. Остават ' + (MAX_FAILS - fails()) + ' опита.', 'err');
-      $('inPin').value = ''; drawDots(0);
-    }
+    const n = fails()+1; localStorage.setItem(K.fails,String(n));
+    if(n >= MAX_FAILS) wipe();
+    else { shake($('inPin')); $('inPin').value=''; gmsg('Грешен PIN. Остават '+(MAX_FAILS-n)+' опита.','e') }
   }
   $('btnPin').disabled = false;
-};
+});
 
-async function copyToken(){
-  try{ await navigator.clipboard.writeText(TOKEN); return true; }
-  catch(e){
-    const ta = document.createElement('textarea');
-    ta.value = TOKEN; document.body.appendChild(ta); ta.select();
-    try{ document.execCommand('copy'); }catch(_){}
-    document.body.removeChild(ta);
-    return true;
-  }
+$('btnSetup').addEventListener('click', async () => {
+  const t=$('setToken').value.trim(), a=$('setPin').value.trim(), b=$('setPin2').value.trim();
+  if(!t){ shake($('setToken')); gmsg('Въведи admin токена.','e'); return }
+  if(a.length<6){ shake($('setPin')); gmsg('PIN-ът е минимум 6 цифри.','e'); return }
+  if(a!==b){ shake($('setPin2')); gmsg('PIN-овете не съвпадат.','e'); return }
+  $('btnSetup').disabled=true; gmsg('Свързване с отпечатъка…');
+  const bio = await regBio();
+  await seal(t,a);
+  $('setToken').value=''; $('setPin').value=''; $('setPin2').value='';
+  $('btnSetup').disabled=false;
+  gmsg(bio?'Готово. Отпечатъкът е свързан.':'Готово. Отпечатък няма — влиза се с PIN.','o');
+  step('stLock'); $('btnBio').style.display = bio?'block':'none';
+});
+
+/* ─── API ─── */
+async function get(path, params){
+  const u = new URL(W+path);
+  u.searchParams.set('pass', TOKEN);
+  if(params) Object.entries(params).forEach(([k,v]) => { if(v!=null&&v!=='') u.searchParams.set(k,v) });
+  const r = await fetch(u); let d=null;
+  try{ d = await r.json() }catch(e){}
+  if(!r.ok || !d || !d.ok) throw new Error((d&&d.error)||('HTTP '+r.status));
+  return d;
 }
-$('btnCopy').onclick = async () => {
-  await copyToken();
-  msg('Токенът е в клипборда.', 'ok');
-};
-$('btnGo').onclick = async () => {
-  await copyToken();
-  /* Токенът се предава през клипборда, не през URL: адресът остава в
-     историята на браузъра, а фрагментът — в back-стека. Един paste е
-     по-евтин от токен, който се влачи в лентата. */
-  window.open(PANEL, '_blank', 'noopener');
-  msg('Панелът е отворен. Постави токена в полето за парола.', 'ok');
-};
-$('btnWipe').onclick = () => {
-  if(confirm('Изтриване на токена и отпечатъка от този телефон?')) wipe();
-};
+async function post(path, body){
+  const r = await fetch(W+path,{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(Object.assign({pass:TOKEN}, body))});
+  let d=null; try{ d = await r.json() }catch(e){}
+  if(!r.ok || !d || !d.ok) throw new Error((d&&d.error)||('HTTP '+r.status));
+  return d;
+}
+function fail(node, e){ node.innerHTML=''; node.appendChild(el('div','err','⚠ '+esc(e.message))) }
 
-$('btnSetup').onclick = async () => {
-  const t = $('setToken').value.trim();
-  const p1 = $('setPin').value.trim(), p2 = $('setPin2').value.trim();
-  if(!t){ shake($('setToken')); msg('Въведи admin токена.', 'err'); return; }
-  if(p1.length < 6){ shake($('setPin')); msg('PIN-ът е минимум 6 цифри.', 'err'); return; }
-  if(p1 !== p2){ shake($('setPin2')); msg('PIN-овете не съвпадат.', 'err'); return; }
+/* ─── табове ─── */
+const TABS = [['home','Начало'],['drv','Шофьори'],['map','Живо'],['stat','Статистика'],['kv','KV'],['gh','Actions'],['sec','Ключове']];
+function enterApp(){
+  $('gate').style.display='none'; $('app').style.display='block';
+  const t=$('tabs'); t.innerHTML='';
+  TABS.forEach(([id,label],i)=>{
+    const b=el('button','tab'+(i===0?' sel':''),label);
+    b.addEventListener('click',()=>selTab(id));
+    t.appendChild(b);
+  });
+  selTab('home');
+}
+function selTab(id){
+  TABS.forEach(([x])=>$('p-'+x).classList.toggle('on',x===id));
+  Array.from($('tabs').children).forEach((b,i)=>b.classList.toggle('sel',TABS[i][0]===id));
+  window.scrollTo(0,0);
+  ({home:loadHealth, drv:loadDrivers, map:loadLive, stat:loadStats, kv:()=>{}, gh:loadRepos, sec:()=>{}})[id]();
+}
 
-  $('btnSetup').disabled = true;
-  msg('Свързване с отпечатъка…', '');
-  const bio = await registerBio();
-  msg('Заключване…', '');
-  await sealToken(t, p1);
-  $('setToken').value = ''; $('setPin').value = ''; $('setPin2').value = '';
-  $('btnSetup').disabled = false;
-  msg(bio ? 'Готово. Отпечатъкът е свързан с този телефон.'
-          : 'Готово. Отпечатък не е наличен — влиза се с PIN.', 'ok');
-  show('stLock');
-  $('btnBio').style.display = bio ? 'block' : 'none';
-};
+/* ─── Начало ─── */
+async function loadHealth(){
+  const box=$('health'); box.innerHTML='<span class="mu">Зареждане…</span>';
+  let d; try{ d = await get('/admin/health') }catch(e){ return fail(box,e) }
+  box.innerHTML='';
+  const q=(name,o)=>{
+    const cls = o.pct>=90?'max':o.pct>=70?'hot':'';
+    const r=el('div');
+    r.appendChild(el('div','row','<span>'+name+'</span><b>'+o.used+' / '+o.cap+'</b>'));
+    const bar=el('div','bar'); bar.appendChild(el('i',cls)); bar.firstChild.style.width=Math.min(100,o.pct)+'%';
+    r.appendChild(bar); return r;
+  };
+  box.appendChild(q('TomTom днес', d.quotas.tomtom));
+  box.appendChild(q('AeroDataBox днес', d.quotas.aerodatabox));
+  const kv=d.kv;
+  box.appendChild(el('div','row','<span>Шофьори с достъп</span><b>'+kv.tokens+'</b>'));
+  box.appendChild(el('div','row','<span>GPS записи живи</span><b>'+kv.drivers+'</b>'));
+  box.appendChild(el('div','row','<span>Чакащи заявки</span><b>'+(kv.pending||0)+'</b>'));
+  box.appendChild(el('div','row','<span>Клиенти на картата</span><b>'+kv.presence+'</b>'));
+  if(d.risk_cached) box.appendChild(el('div','row','<span>Риск днес</span><b>🚗 '+d.risk_cached.car+'/10 · 🧍 '+d.risk_cached.harm+'/10</b>'));
+  const s=d.secrets;
+  const bad=[];
+  if(!s.admin_token_secret && !s.admin_token_kv) bad.push('няма admin token никъде');
+  if(!s.gh_token) bad.push('GH_TOKEN липсва — Actions няма да работят');
+  if(!s.tomtom) bad.push('TOMTOM_KEY липсва');
+  if(bad.length) box.appendChild(el('div','warn','⚠ '+bad.join(' · ')));
+  else box.appendChild(el('div','mu','Всички ключове са на място. Worker '+esc(d.version)+'.'));
+}
+$('qRisk').addEventListener('click', async () => {
+  try{ await post('/admin/kv',{op:'delete',key:'risk:current'}); amsg('Кешът на риска е изчистен.','o'); }
+  catch(e){ amsg(e.message,'e') }
+});
+$('qMap').addEventListener('click',()=>window.open('https://fish.taxi','_blank','noopener'));
+$('qBak').addEventListener('click',()=>window.open('https://emillion-lab.github.io/BAK/','_blank','noopener'));
+$('qKat').addEventListener('click',()=>window.open('https://emillion-lab.github.io/KAT/','_blank','noopener'));
+$('btnWipe').addEventListener('click',()=>{ if(confirm('Изтриване на токена и отпечатъка от този телефон?')) wipe() });
+
+/* ─── Шофьори ─── */
+async function loadDrivers(){
+  const pb=$('pend'), db=$('drv');
+  pb.innerHTML=''; db.innerHTML='<div class="card"><span class="mu">Зареждане…</span></div>';
+  try{
+    const p = await get('/admin/pending');
+    if(p.records.length){
+      const c=el('div','card'); c.appendChild(el('h2',null,'Чакащи заявки'));
+      p.records.forEach(rec=>{
+        const b=el('div',null,'<b>'+esc(rec.name)+'</b> · '+esc(rec.phone));
+        b.appendChild(el('div','mu',esc(rec.car)+' · '+esc(rec.plate)));
+        const res=el('div');
+        b.appendChild(bt('✓ Одобри','b-acc b-sm',()=>act(rec.id,'approve',res)));
+        b.appendChild(bt('✗ Откажи','b-rd b-sm',()=>act(rec.id,'reject',res)));
+        b.appendChild(res); b.appendChild(el('div',null,'<hr style="border:0;border-top:1px solid #22334D;margin:10px 0">'));
+        c.appendChild(b);
+      });
+      pb.appendChild(c);
+    }
+  }catch(e){ return fail(db,e) }
+
+  let d; try{ d = await get('/admin/drivers') }catch(e){ return fail(db,e) }
+  db.innerHTML='';
+  const c=el('div','card'); c.appendChild(el('h2',null,'Шофьори с достъп ('+d.count+')'));
+  if(!d.drivers.length) c.appendChild(el('div','mu','Няма нито един ключ token: в KV'));
+  d.drivers.forEach(x=>{
+    const w=el('div');
+    w.appendChild(el('div',null,'<b>'+esc(x.name||('ID '+x.driver_id))+'</b> '+
+      (x.online?'<span class="okc">● ONLINE</span>':'<span class="mu">○ офлайн</span>')));
+    w.appendChild(el('div','mu','ID: '+esc(x.driver_id)+(x.car?' · '+esc(x.car):'')+
+      '<br>последно: '+(x.last_seen?new Date(x.last_seen).toLocaleString('bg'):'никога')+
+      (x.has_base?' · има база':'')));
+    const res=el('div');
+    w.appendChild(bt('🔑 Нов token','b-y b-sm',()=>retok(x.driver_id,res)));
+    w.appendChild(bt('🗑 Изтрий','b-rd b-sm',()=>revoke(x.driver_id,res)));
+    w.appendChild(res);
+    w.appendChild(el('div',null,'<hr style="border:0;border-top:1px solid #22334D;margin:10px 0">'));
+    c.appendChild(w);
+  });
+  db.appendChild(c);
+}
+async function act(id, action, res){
+  try{
+    const d = await post('/admin/action',{id,action});
+    res.innerHTML='';
+    if(action==='approve') res.appendChild(el('div','tok','✓ ID: '+esc(d.driver_id)+'<br>Token: '+esc(d.token)));
+    loadDrivers();
+  }catch(e){ fail(res,e) }
+}
+async function retok(id,res){
+  try{
+    const d = await post('/admin/retoken',{driver_id:id});
+    res.innerHTML='';
+    res.appendChild(el('div','tok','Нов token за '+esc(id)+':<br>'+esc(d.token)+
+      '<br>Прати го по Viber. Апът иска СТОП и после СТАРТ.'));
+  }catch(e){ fail(res,e) }
+}
+async function revoke(id,res){
+  if(!confirm('Изтриване на достъпа на '+id+'?')) return;
+  try{ await post('/admin/revoke',{driver_id:id}); loadDrivers() }catch(e){ fail(res,e) }
+}
+$('btnAdd').addEventListener('click', async () => {
+  const res=$('addRes');
+  try{
+    const d = await post('/admin/add',{name:$('aName').value.trim(),phone:$('aPhone').value.trim(),
+      car:$('aCar').value.trim(),plate:$('aPlate').value.trim()});
+    res.innerHTML='';
+    res.appendChild(el('div','tok','✓ ID: '+esc(d.driver_id)+'<br>Token: '+esc(d.token)+'<br>Прати му ги по Viber.'));
+    ['aName','aPhone','aCar','aPlate'].forEach(i=>$(i).value='');
+  }catch(e){ fail(res,e) }
+});
+
+/* ─── Живо ─── */
+async function loadLive(){
+  const box=$('live'); box.innerHTML='Зареждане…';
+  try{
+    const r = await fetch(W+'/gps'); const d = await r.json();
+    box.innerHTML='';
+    box.appendChild(el('div','row','<span>Онлайн сега</span><b class="okc">'+d.online+' от '+d.count+'</b>'));
+    d.drivers.sort((a,b)=>(b.updated_at||0)-(a.updated_at||0)).forEach(x=>{
+      box.appendChild(el('div','row','<span>'+esc(x.driver_id)+(x.approx?' <span class="mu">(маскиран)</span>':'')+
+        '</span><b>'+(x.online?'<span class="okc">ONLINE</span>':'<span class="mu">офлайн</span>')+'</b>'));
+    });
+    box.appendChild(bt('🗺 Отвори картата','b-gh b-sm',()=>window.open('https://fish.taxi','_blank','noopener')));
+  }catch(e){ fail(box,e) }
+}
+
+/* ─── Статистика ─── */
+async function loadStats(){
+  const box=$('stats'); box.innerHTML='Зареждане…';
+  let d; try{ d = await get('/admin/stats') }catch(e){ return fail(box,e) }
+  box.innerHTML='';
+  const days = Object.keys(d.days).sort().reverse();
+  if(!days.length){ box.textContent='Няма записана статистика.'; return }
+  let tv=0,tp=0,to=0;
+  days.forEach(k=>{
+    const r=d.days[k];
+    const pv=r.pageview||0, po=r.profile_open||0, o=(r.order_viber||0)+(r.order_wa||0);
+    tv+=pv; tp+=po; to+=o;
+    box.appendChild(el('div','row','<span>'+k.slice(5)+'</span><b>👁 '+pv+' · 👤 '+po+' · 📲 '+o+'</b>'));
+  });
+  box.appendChild(el('div','row','<span><b>Общо</b></span><b class="okc">👁 '+tv+' · 👤 '+tp+' · 📲 '+to+'</b>'));
+}
+
+/* ─── KV ─── */
+$('btnKvList').addEventListener('click', async () => {
+  const box=$('kvKeys'); box.innerHTML='<span class="mu">Зареждане…</span>';
+  let d; try{ d = await get('/admin/kv',{op:'list',prefix:$('kvPrefix').value.trim()}) }catch(e){ return fail(box,e) }
+  box.innerHTML='';
+  box.appendChild(el('div','mu','Намерени: '+d.count));
+  d.keys.forEach(k=>{
+    const n=el('div','k',esc(k));
+    n.addEventListener('click',()=>{ $('kvKey').value=k; $('kvVal').value=''; });
+    box.appendChild(n);
+  });
+});
+$('btnKvGet').addEventListener('click', async () => {
+  const res=$('kvRes'); res.innerHTML='';
+  try{
+    const d = await get('/admin/kv',{op:'get',key:$('kvKey').value.trim()});
+    $('kvVal').value = d.value == null ? '' : d.value;
+    res.appendChild(el('div','mu', d.exists ? 'Прочетено.' : 'Ключът не съществува.'));
+  }catch(e){ fail(res,e) }
+});
+$('btnKvPut').addEventListener('click', async () => {
+  const res=$('kvRes'); res.innerHTML='';
+  const k=$('kvKey').value.trim();
+  if(!confirm('Запис в живото KV:\n'+k+'\n\nСигурен ли си?')) return;
+  try{ await post('/admin/kv',{op:'put',key:k,value:$('kvVal').value});
+    res.appendChild(el('div','okc','✓ Записано.')) }catch(e){ fail(res,e) }
+});
+$('btnKvDel').addEventListener('click', async () => {
+  const res=$('kvRes'); res.innerHTML='';
+  const k=$('kvKey').value.trim();
+  if(!confirm('ИЗТРИВАНЕ на ключ:\n'+k+'\n\nНяма връщане назад.')) return;
+  try{ await post('/admin/kv',{op:'delete',key:k});
+    res.appendChild(el('div','okc','✓ Изтрито.')) }catch(e){ fail(res,e) }
+});
+
+/* ─── GitHub ─── */
+async function loadRepos(){
+  const sel=$('ghRepo');
+  if(sel.options.length > 1) return;
+  try{
+    const d = await get('/admin/dispatch');
+    d.repos.forEach(r=>{ const o=document.createElement('option'); o.value=r; o.textContent=r; sel.appendChild(o) });
+  }catch(e){ fail($('ghRes'),e) }
+}
+$('ghRepo').addEventListener('change', async () => {
+  const wf=$('ghWf'); wf.innerHTML='<option value="">— избери workflow —</option>';
+  if(!$('ghRepo').value) return;
+  try{
+    const d = await get('/admin/dispatch',{repo:$('ghRepo').value});
+    d.workflows.forEach(w=>{ const o=document.createElement('option'); o.value=w.file; o.textContent=w.name; wf.appendChild(o) });
+  }catch(e){ fail($('ghRes'),e) }
+});
+$('btnGhRun').addEventListener('click', async () => {
+  const res=$('ghRes'); res.innerHTML='';
+  if(!$('ghRepo').value || !$('ghWf').value){ res.appendChild(el('div','err','Избери репо и workflow.')); return }
+  if(!confirm('Пускане на '+$('ghWf').value+' в '+$('ghRepo').value+'?')) return;
+  try{
+    const d = await post('/admin/dispatch',{repo:$('ghRepo').value,workflow:$('ghWf').value});
+    res.innerHTML='';
+    res.appendChild(el('div','okc','✓ Пуснат.'));
+    const a=el('a',null,'Виж в GitHub'); a.href=d.watch; a.target='_blank'; res.appendChild(a);
+  }catch(e){ fail(res,e) }
+});
+$('btnGhRuns').addEventListener('click', async () => {
+  const res=$('ghRes'); res.innerHTML='';
+  if(!$('ghRepo').value){ res.appendChild(el('div','err','Избери репо.')); return }
+  try{
+    const d = await get('/admin/dispatch',{repo:$('ghRepo').value,workflow:$('ghWf').value,runs:'1'});
+    res.innerHTML='';
+    d.runs.forEach(r=>{
+      const ok = r.conclusion==='success';
+      res.appendChild(el('div','row','<span>'+esc(r.name)+'</span><b class="'+(ok?'okc':'err')+'">'+
+        esc(r.conclusion||r.status)+'</b>'));
+    });
+  }catch(e){ fail(res,e) }
+});
+
+/* ─── Ключове ─── */
+$('btnRotate').addEventListener('click', async () => {
+  const res=$('rotRes'); res.innerHTML='';
+  if(!confirm('Старият admin token спира веднага. Продължи?')) return;
+  try{
+    const d = await post('/admin/rotate-token',{});
+    TOKEN = d.token;
+    const pin = prompt('Новият token трябва да се запечата. Въведи PIN-а си:');
+    if(pin && pin.length>=6){ await seal(TOKEN,pin); res.appendChild(el('div','okc','✓ Новият token е запазен на този телефон.')) }
+    else res.appendChild(el('div','warn','Токенът е сменен, но НЕ е запечатан. Запиши го:'));
+    res.appendChild(el('div','tok',esc(d.token)));
+  }catch(e){ fail(res,e) }
+});
+$('btnNewPin').addEventListener('click', async () => {
+  const a=$('npin').value.trim(), b=$('npin2').value.trim();
+  if(a.length<6){ shake($('npin')); return amsg('Минимум 6 цифри.','e') }
+  if(a!==b){ shake($('npin2')); return amsg('Не съвпадат.','e') }
+  await seal(TOKEN,a);
+  $('npin').value=''; $('npin2').value='';
+  amsg('PIN-ът е сменен.','o');
+});
 
 /* ─── старт ─── */
 (function init(){
-  if(!isSetUp()){
-    show('stSetup');
-    $('sub').textContent = 'Първо отваряне на този телефон';
-    return;
-  }
-  show('stLock');
+  if(!localStorage.getItem(K.blob)){ step('stSetup'); $('sub').textContent='Първо отваряне на този телефон'; return }
+  step('stLock');
   $('btnBio').style.display = localStorage.getItem(K.cred) ? 'block' : 'none';
   const left = MAX_FAILS - fails();
-  if(left < MAX_FAILS) $('foot').textContent = 'Остават ' + left + ' опита преди изтриване.';
+  if(left < MAX_FAILS) $('gfoot').textContent = 'Остават '+left+' опита преди изтриване.';
 })();
 </script>
 </body>
