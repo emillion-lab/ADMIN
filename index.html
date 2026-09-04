@@ -88,6 +88,7 @@ a{color:var(--acc)}
       <input class="pin" id="inPin" type="password" inputmode="numeric" autocomplete="off" maxlength="12" placeholder="••••••">
       <button class="b-acc w" id="btnPin">Продължи</button>
       <button class="b-gh w" id="btnPinBack">Назад</button>
+      <button class="b-rd w" id="btnPinForgot">Забравен PIN — нулирай телефона</button>
     </div>
   </div>
 
@@ -285,6 +286,9 @@ $('btnBio').addEventListener('click', async () => {
 });
 $('btnPinOnly').addEventListener('click', () => goPin('Въведи PIN'));
 $('btnPinBack').addEventListener('click', () => { $('inPin').value=''; gmsg(''); step('stLock') });
+$('btnPinForgot').addEventListener('click', () => {
+  if(confirm('Това изтрива запечатания токен от ТОЗИ телефон.\nAdmin token-ът на сървъра остава непокътнат.\nЩе трябва да го въведеш наново. Продължи?')) wipe();
+});
 
 function goPin(label){
   $('pinLabel').textContent=label; $('inPin').value='';
